@@ -12,6 +12,8 @@ const character: Char = {
 
 test("Given the required props, When the component is rendered, Then the text should be present", async () => {
   render(<Character character={character} />);
-  const text = await screen.findByText(/Height/i);
-  expect(text).toBeInTheDocument();
+  const staticText = await screen.findByText(/Height/i);
+  const variableText = await screen.findByText(/170/i);
+  expect(staticText).toBeInTheDocument();
+  expect(variableText).toBeInTheDocument();
 });
