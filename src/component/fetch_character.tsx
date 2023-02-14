@@ -2,16 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Char } from "./char";
 import Character from "./character";
 
-const initialState = {
-  error: null,
-  character: null,
-};
-
 const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
-  const [error, setError] = useState<any>(initialState.error);
-  const [character, setCharacter] = useState<Char | null>(
-    initialState.character
-  );
+  const [error, setError] = useState<any>();
+  const [character, setCharacter] = useState<Char | null>();
   const [buttonClicked, setButtonClicked] = useState(false);
 
   const buttonText = buttonClicked ? "Ok" : "Fetch character";
