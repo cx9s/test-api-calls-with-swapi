@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import CharacterBox from "./component/character_box";
-import { Character } from "./component/character";
+import FetchCharacter from "./component/fetch_character";
 
 function App() {
-  const [character, setCharacter] = useState<Character>();
-
-  const getCharacter = async (id: number) => {
-    const response = await fetch(`https://swapi.dev/api/people/${id}`);
-    const char = (await response.json()) as Character;
-    setCharacter(char);
-  };
-
-  useEffect(() => {
-    getCharacter(1);
-  }, [character]);
+  const [apiUrl, setApiUrl] = useState<string>(
+    `https://swapi.dev/api/people/1`
+  );
 
   return (
     <div className="App">
       <h1>Testing API calls in React with the SWAPI API</h1>
-      <CharacterBox url={url} />
+      <FetchCharacter apiUrl={apiUrl} />
     </div>
   );
 }

@@ -1,17 +1,22 @@
 import React from "react";
-import { Character } from "./character";
+import { Char } from "./char";
 
-const CharacterBox: React.FC<{ character: Character }> = ({ character }) => {
+interface CharacterProps {
+  character: Char;
+}
+
+const Character: React.FC<CharacterProps> = ({ character }) => {
   const { name, height, gender, homeworld, url } = character;
+
   return (
-    <div>
+    <>
       <h2>{name}</h2>
       <p>Height: {height}</p>
       <p>Gender: {gender}</p>
       <p>Homeworld: {homeworld}</p>
       <p>Url: {url}</p>
-    </div>
+    </>
   );
 };
 
-export default CharacterBox;
+export default Character;
