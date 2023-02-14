@@ -1,5 +1,4 @@
-import { response } from "msw";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Char } from "./char";
 import Character from "./character";
 
