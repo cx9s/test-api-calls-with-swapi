@@ -8,20 +8,37 @@ const initialState = {
 };
 
 const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
-  const [error, setError] = useState<string | null>(initialState.character);
-  const [character, setCharacter] = useState<Char | null>(initialState.error);
+  const [error, setError] = useState<any>(initialState.error);
+  const [character, setCharacter] = useState<Char | null>(
+    initialState.character
+  );
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+  const buttonText = buttonClicked ? "Ok" : "Fetch character";
 
   const getCharacter = async (apiUrl: string) => {
-    const response = await fetch(apiUrl);
-    const char = (await response.json()) as Char;
-    setCharacter(char);
+    try {
+      const response = await fetch(apiUrl);
+      const char = (await response.json()) as Char;
+      setCharacter(char);
+      setButtonClicked(true);
+    } catch (e) {
+      setError(e);
+      setButtonClicked(true);
+    }
   };
 
-  useEffect(() => {
-    getCharacter(apiUrl);
-  }, [character]);
-
-  return <div>{character && <Character character={character} />}</div>;
+  return (
+    <div>
+      <p>
+        <button onClick={() => getCharacter(apiUrl)} disabled={buttonClicked}>
+          {buttonText}
+        </button>
+      </p>
+      {character && <Character character={character} />}
+      {error && <p role="alert">Oops, failed to fetch!</p>}
+    </div>
+  );
 };
 
 export default FetchCharacter;
