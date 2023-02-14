@@ -31,3 +31,52 @@ test("Given the required props, When the api is called successfully, Then the te
   expect(screen.getByRole("heading")).toHaveTextContent("abc");
   expect(screen.getByRole("button")).toBeDisabled();
 });
+
+test("Given the required props, When the reponse status is 404, Then the error should be present", async () => {
+  server.use(
+    rest.get("/people/1", (req, res, ctx) => {
+      return res(ctx.status(404));
+    })
+  );
+
+  render(<FetchCharacter apiUrl="/people/1" />);
+
+  fireEvent.click(screen.getByText("Fetch character"));
+  await waitFor(() => screen.findByRole("alert"));
+
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "Oops... I cannot find anything"
+  );
+});
+
+test("Given the required props, When the reponse status is 418, Then the error should be present", async () => {
+  server.use(
+    rest.get("/people/1", (req, res, ctx) => {
+      return res(ctx.status(418));
+    })
+  );
+
+  render(<FetchCharacter apiUrl="/people/1" />);
+
+  fireEvent.click(screen.getByText("Fetch character"));
+  await waitFor(() => screen.findByRole("alert"));
+
+  expect(screen.getByRole("alert")).toHaveTextContent("418 I'm a tea pot");
+});
+
+test("Given the required props, When the reponse status is 500, Then the error should be present", async () => {
+  server.use(
+    rest.get("/people/1", (req, res, ctx) => {
+      return res(ctx.status(500));
+    })
+  );
+
+  render(<FetchCharacter apiUrl="/people/1" />);
+
+  fireEvent.click(screen.getByText("Fetch character"));
+  await waitFor(() => screen.findByRole("alert"));
+
+  expect(screen.getByRole("alert")).toHaveTextContent(
+    "Oops... something went wrong"
+  );
+});
