@@ -1,12 +1,15 @@
-# Getting Started with Create React App
+# Testing API calls in React with the SWAPI API
 
-This project aims to practise MSW.
+## This project aims to practise MSW
 
 The React app call the Star Wars API people end point and display corresponding information on the page depending on api response.
 
 200: details of the first person from the Star Wars API;
+
 404: "Oops... I cannot find anything";
+
 418: "418 I'm a tea pot 🫖, silly";
+
 500: "Oops... something went wrong, try again 🤕".
 
 ## Available Scripts
