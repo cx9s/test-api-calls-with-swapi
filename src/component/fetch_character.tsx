@@ -3,7 +3,7 @@ import { Char } from "./char";
 import Character from "./character";
 
 const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
-  const [error, setError] = useState<any>();
+  const [error, setError] = useState<Error | null>();
   const [character, setCharacter] = useState<Char | null>();
   const [buttonClicked, setButtonClicked] = useState(false);
 
@@ -14,9 +14,9 @@ const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
       const response = await fetch(apiUrl);
       const char = (await response.json()) as Char;
       setCharacter(char);
-      setButtonClicked(true);
     } catch (e) {
-      setError(e);
+      setError(e as Error);
+    } finally {
       setButtonClicked(true);
     }
   };
@@ -29,7 +29,12 @@ const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
         </button>
       </p>
       {character && <Character character={character} />}
-      {error && <p role="alert">Oops, failed to fetch!</p>}
+      {error && (
+        <>
+          <h2>Error</h2>
+          <p role="alert">{error.toString()}</p>
+        </>
+      )}
     </div>
   );
 };

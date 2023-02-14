@@ -22,11 +22,10 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test("Given the required props, When the api is called, Then the text should be present and button should be disabled", async () => {
+test("Given the required props, When the api is called successfully, Then the text should be present and button should be disabled", async () => {
   render(<FetchCharacter apiUrl="/people/1" />);
 
   fireEvent.click(screen.getByText("Fetch character"));
-
   await waitFor(() => screen.findByRole("heading"));
 
   expect(screen.getByRole("heading")).toHaveTextContent("abc");
