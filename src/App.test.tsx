@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders h1 element", () => {
+test("Given the App, When the component is rendered, Then the text should be present", () => {
   render(<App />);
-  const h1Element = screen.getByText(
+  const text = screen.getByText(
     /Testing API calls in React with the SWAPI API/i
   );
-  expect(h1Element).toBeInTheDocument();
+  expect(text).toBeInTheDocument();
 });
