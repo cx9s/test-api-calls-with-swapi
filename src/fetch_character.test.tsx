@@ -1,16 +1,34 @@
-import { render, screen } from "@testing-library/react";
-import user from "@testing-library/user-event";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import FetchCharacter from "./component/fetch_character";
 
+const server = setupServer(
+  rest.get("/people/1", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        name: "abc",
+        height: "170",
+        gender: "n/a",
+        homeworld: "aaa",
+        url: "aaa",
+      })
+    );
+  })
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 test("Given the required props, When the api is called, Then the text should be present and button should be disabled", async () => {
-  render(<FetchCharacter apiUrl="https://swapi.dev/api/people/1" />);
+  render(<FetchCharacter apiUrl="/people/1" />);
 
-  // ACT
-  await user.click(screen.getByText(/Fetch character/i));
-  await screen.findByRole("heading");
+  fireEvent.click(screen.getByText("Fetch character"));
 
-  // ASSERT
-  expect(screen.getByRole("heading")).toHaveTextContent("Luke Skywalker");
+  await waitFor(() => screen.findByRole("heading"));
+
+  expect(screen.getByRole("heading")).toHaveTextContent("abc");
   expect(screen.getByRole("button")).toBeDisabled();
 });
