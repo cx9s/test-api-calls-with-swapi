@@ -1,3 +1,4 @@
+import { response } from "msw";
 import React, { useState, useEffect } from "react";
 import { Char } from "./char";
 import Character from "./character";
@@ -7,17 +8,34 @@ const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
   const [character, setCharacter] = useState<Char | null>();
   const [buttonClicked, setButtonClicked] = useState(false);
 
-  const buttonText = buttonClicked ? "Ok" : "Fetch character";
-
   const getCharacter = async (apiUrl: string) => {
     try {
       const response = await fetch(apiUrl);
-      const char = (await response.json()) as Char;
-      setCharacter(char);
+      switch (response.status) {
+        case 200: {
+          const char = (await response.json()) as Char;
+          setCharacter(char);
+          setButtonClicked(true);
+          break;
+        }
+        case 404: {
+          setError(new Error(`Oops... I cannot find anything`));
+          break;
+        }
+        case 418: {
+          setError(new Error(`418 I'm a tea pot 🫖, silly`));
+          break;
+        }
+        case 500: {
+          setError(new Error(`Oops... something went wrong, try again 🤕`));
+          break;
+        }
+        default: {
+          setError(new Error(`${response.status}`));
+        }
+      }
     } catch (e) {
       setError(e as Error);
-    } finally {
-      setButtonClicked(true);
     }
   };
 
@@ -25,13 +43,13 @@ const FetchCharacter: React.FC<{ apiUrl: string }> = ({ apiUrl }) => {
     <div>
       <p>
         <button onClick={() => getCharacter(apiUrl)} disabled={buttonClicked}>
-          {buttonText}
+          {buttonClicked ? "Fetch done" : "Fetch character"}
         </button>
       </p>
       {character && <Character character={character} />}
       {error && (
         <>
-          <h2>Error</h2>
+          <h2>No character to be shown.</h2>
           <p role="alert">{error.toString()}</p>
         </>
       )}
