@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="App">
       <h1>Testing API calls in React with the SWAPI API</h1>
-      {character && <CharacterBox character={character} />}
+      <CharacterBox url={url} />
     </div>
   );
 }
