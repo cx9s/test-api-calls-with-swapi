@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import Character from "./component/character";
-import { Char } from "./component/char";
+import Character from "./character";
+import { Char } from "./char";
 
 const character: Char = {
   name: "a",

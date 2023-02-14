@@ -2,7 +2,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import FetchCharacter from "./component/fetch_character";
+import FetchCharacter from "./fetch_character";
 
 const server = setupServer(
   rest.get("/people/1", (req, res, ctx) => {
